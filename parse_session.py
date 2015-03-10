@@ -30,6 +30,24 @@ c['gender'].value_counts().plot(kind='bar',ax=ax3,color=gencolors)
 ax3.set_ylabel('Count')
 ax3.set_title("Gender of session chairs")
 
+# Gender of attendees
+
+countrydata = pd.read_csv('map/countries.csv')
+names = countrydata['name']
+firstnames = [x.split(' ')[0] for x in names]
+
+from sexmachine import detector as gender
+d = gender.Detector(case_sensitive=False)
+from collections import Counter
+genders = [d.get_gender(fn) for fn in firstnames]
+cg = Counter(genders)
+attendees = list('M'*(cg['male'] + cg['mostly_male'])+'F'*(cg['female'] + cg['mostly_female']))
+
+ax12 = fig.add_subplot(3,4,10)
+pd.value_counts(attendees).plot(kind='bar',ax=ax12,color=gencolors)
+ax12.set_ylabel('Count')
+ax12.set_title("Gender of attendees")
+
 ax4 = fig.add_subplot(342)
 qpt = [len(x) for x in q['questions']]
 ax4.hist(qpt,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='k')
@@ -83,19 +101,19 @@ ax9.set_title('Female asks 1st Q')
 
 # When M/F is speaker, who asks questions?
 
-ax8 = fig.add_subplot(343)
+ax10 = fig.add_subplot(343)
 malefirst_maleafter = ['M'*x[1]['questions'].count('M') for x in q.iterrows() if x[1]['speaker'] == 'M']
 malefirst_femaleafter = ['F'*x[1]['questions'].count('F') for x in q.iterrows() if x[1]['speaker'] == 'M']
-pd.value_counts(list(''.join(malefirst_maleafter+malefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax8,color=gencolors)
-ax8.set_ylabel('Fraction of questions')
-ax8.set_title('Male asks 1st Q')
+pd.value_counts(list(''.join(malefirst_maleafter+malefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax10,color=gencolors)
+ax10.set_ylabel('Fraction of questions')
+ax10.set_title('Male asks 1st Q')
 
-ax9 = fig.add_subplot(347)
+ax11 = fig.add_subplot(347)
 femalefirst_maleafter = ['M'*x[1]['questions'].count('M') for x in q.iterrows() if x[1]['speaker'] == 'F']
 femalefirst_femaleafter = ["F"*x[1]['questions'].count('F') for x in q.iterrows() if x[1]['speaker'] == 'F']
-pd.value_counts(list(''.join(femalefirst_maleafter+femalefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax9,color=gencolors)
-ax9.set_ylabel('Fraction of questions')
-ax9.set_title('Female asks 1st Q')
+pd.value_counts(list(''.join(femalefirst_maleafter+femalefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax11,color=gencolors)
+ax11.set_ylabel('Fraction of questions')
+ax11.set_title('Female asks 1st Q')
 
 fig.tight_layout()
 
