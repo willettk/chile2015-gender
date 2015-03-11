@@ -52,7 +52,7 @@ ax4 = fig.add_subplot(342)
 qpt = [len(x) for x in q['questions']]
 ax4.hist(qpt,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='k')
 ax4.set_xlabel('Questions per talk')
-ax4.set_ylim(0,7)
+ax4.set_ylim(0,10)
 
 ax5 = fig.add_subplot(346)
 mq = [len(x[1]['questions']) for x in q.iterrows() if x[1]['speaker'] == 'M']
@@ -60,7 +60,7 @@ fq = [len(x[1]['questions']) for x in q.iterrows() if x[1]['speaker'] == 'F']
 ax5.hist(mq,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='orange',label='Male speaker')
 ax5.hist(fq,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='purple',label='Female speaker')
 ax5.set_xlabel('Questions per talk')
-ax5.set_ylim(0,7)
+ax5.set_ylim(0,10)
 ax5.legend(loc='upper right')
 
 
@@ -91,6 +91,7 @@ malefirst_femaleafter = ['F'*x[1]['questions'][1:].count('F') for x in q.iterrow
 pd.value_counts(list(''.join(malefirst_maleafter+malefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax8,color=gencolors)
 ax8.set_ylabel('Fraction of remaining questions')
 ax8.set_title('Male asks 1st Q')
+ax8.set_ylim(0,1)
 
 ax9 = fig.add_subplot(348)
 femalefirst_maleafter = ['M'*x[1]['questions'][1:].count('M') for x in q.iterrows() if x[1]['questions'][0] == 'F']
@@ -98,6 +99,7 @@ femalefirst_femaleafter = ["F"*x[1]['questions'][1:].count('F') for x in q.iterr
 pd.value_counts(list(''.join(femalefirst_maleafter+femalefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax9,color=gencolors)
 ax9.set_ylabel('Fraction of remaining questions')
 ax9.set_title('Female asks 1st Q')
+ax9.set_ylim(0,1)
 
 # When M/F is speaker, who asks questions?
 
@@ -106,14 +108,16 @@ malefirst_maleafter = ['M'*x[1]['questions'].count('M') for x in q.iterrows() if
 malefirst_femaleafter = ['F'*x[1]['questions'].count('F') for x in q.iterrows() if x[1]['speaker'] == 'M']
 pd.value_counts(list(''.join(malefirst_maleafter+malefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax10,color=gencolors)
 ax10.set_ylabel('Fraction of questions')
-ax10.set_title('Male asks 1st Q')
+ax10.set_title('Male speaker')
+ax10.set_ylim(0,1)
 
 ax11 = fig.add_subplot(347)
 femalefirst_maleafter = ['M'*x[1]['questions'].count('M') for x in q.iterrows() if x[1]['speaker'] == 'F']
 femalefirst_femaleafter = ["F"*x[1]['questions'].count('F') for x in q.iterrows() if x[1]['speaker'] == 'F']
 pd.value_counts(list(''.join(femalefirst_maleafter+femalefirst_femaleafter)),normalize=True).plot(kind='bar',ax=ax11,color=gencolors)
 ax11.set_ylabel('Fraction of questions')
-ax11.set_title('Female asks 1st Q')
+ax11.set_title('Female speaker')
+ax11.set_ylim(0,1)
 
 fig.tight_layout()
 
