@@ -52,7 +52,7 @@ ax4 = fig.add_subplot(342)
 qpt = [len(x) for x in q['questions']]
 ax4.hist(qpt,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='k')
 ax4.set_xlabel('Questions per talk')
-ax4.set_ylim(0,10)
+#ax4.set_ylim(0,10)
 
 ax5 = fig.add_subplot(346)
 mq = [len(x[1]['questions']) for x in q.iterrows() if x[1]['speaker'] == 'M']
@@ -60,7 +60,7 @@ fq = [len(x[1]['questions']) for x in q.iterrows() if x[1]['speaker'] == 'F']
 ax5.hist(mq,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='orange',label='Male speaker')
 ax5.hist(fq,bins=range(0,8),histtype='step',range=(0,8),linewidth=3, color='purple',label='Female speaker')
 ax5.set_xlabel('Questions per talk')
-ax5.set_ylim(0,10)
+ax5.set_ylim(ax4.get_ylim())
 ax5.legend(loc='upper right')
 
 
